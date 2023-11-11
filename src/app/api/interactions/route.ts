@@ -1,12 +1,15 @@
 import { commands, RandomPicType } from "@/commands"
 import { verifyInteractionRequest } from "@/discord/verify-incoming-request"
 import {
+  APIApplicationCommandAttachmentOption,
   APIInteractionDataOptionBase,
   ApplicationCommandOptionType,
   InteractionResponseType,
   InteractionType,
   MessageFlags,
+  
 } from "discord-api-types/v10"
+import { Collection } from 'discord.js';
 import { NextResponse } from "next/server"
 import { getRandomPic } from "./random-pic"
 
@@ -77,42 +80,53 @@ export async function POST(request: Request) {
 
         case commands.video_File.name:
           const videoOptions = interaction.data.options;
-
-          if (!videoOptions) 
-          {
+        
+          if (!videoOptions) {
             return new NextResponse("Invalid request", { status: 400 });
           }
-              // const videoLinkOption = videoOptions.find((opt) => opt.name === "video_link")?.name;
-              // const languageOption = videoOptions.find((opt) => opt.name === "language")?.name;
-          const videoLinkOption = videoOptions.find((opt) => opt.name === "video_link") as 
-          {
+
+          // Assuming attachments is of type 'APIAttachment[]'
+// Rest of your code
+
+// if (attachments && attachmentSize > 0) {
+//   // Assuming you want the name of the first attachment, you can access it like this
+//   const attachmentName = attachments.first()?.name;
+//   console.log("Attachment Name:", attachmentName);
+
+//   // Respond with the attachment name
+//   return new NextResponse("Attachment Name: " + attachmentName);
+// } else {
+//   // Respond if no attachments are found
+//   return new NextResponse("No attachments found in the message.");
+// }
+
+        
+          const videoLinkOption = videoOptions.find((opt) => opt.name === "video_link") as {
             name: "video_link";
             value: string; // Ensure TypeScript recognizes the value property as a string
           };
-          
-          const languageOption = videoOptions.find((opt) => opt.name === "language") as 
-          {
+        
+          const languageOption = videoOptions.find((opt) => opt.name === "language") as {
             name: "language";
             value: string; // Ensure TypeScript recognizes the value property as a string
           };
-
-          if (!videoLinkOption || !languageOption) 
-          {
-           return new NextResponse("Invalid request", { status: 400 });
-          }
-
-        const videoLink=videoLinkOption.value
-        const language=languageOption.value
-
-  // Now you have 'videoLink' and 'language' available for further processing.
-  // You can add your code to process the video URL and language here.
-
-  return NextResponse.json({
-    type: InteractionResponseType.ChannelMessageWithSource,
-    data: { content: `Received video URL: ${videoLink} and language: ${language}` },
-  });
-
         
+          if (!videoLinkOption || !languageOption) {
+            return new NextResponse("Invalid request", { status: 400 });
+          }
+        
+          const videoLink = videoLinkOption.value;
+          const language = languageOption.value;
+        
+          // Now you have 'videoLink', 'language', and 'attachmentName' available for further processing.
+          // You can add your code to process the video URL, language, and attachment name here.
+        
+          return NextResponse.json({
+            type: InteractionResponseType.ChannelMessageWithSource,
+            data: { content: `Received video URL: ${videoLink}, language: ${language}` },
+          });
+        
+
         default:
     }
   }

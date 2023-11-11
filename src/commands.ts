@@ -6,7 +6,7 @@
  */
 /// <reference types="discord-api-types/v10" />
 
-import { ApplicationCommandType } from "discord-api-types/v10"
+import { ApplicationCommandOptionType, ApplicationCommandType } from "discord-api-types/v10"
 
 export const PING_COMMAND = {
   name: "ping",
@@ -27,7 +27,7 @@ export const RANDOM_PIC_COMMAND = {
       name: "type",
       description: "What type of picture would you like?",
       type: ApplicationCommandType.Message,
-      required: true,
+
       choices: [
         { name: "cat", value: "cat" },
         { name: "dog", value: "dog" },
@@ -45,8 +45,8 @@ export const VIDEO_PROCESS_COMMAND = {
     {
       name: "video_link",
       description: "Link to the video to be processed",
-      type: ApplicationCommandType.ChatInput, // Adjust the type as needed
-      required: true,
+      type: ApplicationCommandOptionType.Attachment, // Adjust the type as needed
+     required: true,
     },    
     {
       name: "language",
@@ -72,12 +72,16 @@ export const VIDEO_PROCESS_COMMAND = {
         }
       ],
     },
+    
   ],
-} as const
 
+} as const
 export const commands = {
   ping: PING_COMMAND,
   invite: INVITE_COMMAND,
   randompic: RANDOM_PIC_COMMAND,
-  video_File: VIDEO_PROCESS_COMMAND,  
+  video_File: VIDEO_PROCESS_COMMAND, 
+ 
 } as const
+
+
